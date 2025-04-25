@@ -60,10 +60,10 @@ export default function Dashboard() {
     setError(null);
 
     try {
-      const testAddress = "0x5dadb2e88cf9cc2b6f53b5e7413ebfa1a7d740a1";
+      // const testAddress = "0x5dadb2e88cf9cc2b6f53b5e7413ebfa1a7d740a1";
 
       const response = await fetch(
-        `https://api.opensea.io/api/v2/chain/base/account/${testAddress}/nfts?limit=50`,
+        `https://api.opensea.io/api/v2/chain/base/account/${evmAddress}/nfts?limit=50`,
         {
           headers: {
             "X-API-KEY": "1f1aed6a5a574c628b8a7ad5836b77c6",
