@@ -4,8 +4,10 @@ import "./globals.css";
 import { WalletProvider } from "@/providers/web3provider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { MeshProvider, useWallet as useMeshWallet } from "@meshsdk/react";
+import { MeshProvider } from "@meshsdk/react";
 import { LaceWalletProvider } from "@/providers/lace-wallet-provider";
+// import { CardanoWallet } from "@/providers/CardanoProvider";
+import { CardanoWalletProvider } from "@/providers/CardanoProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,12 +24,12 @@ export default function RootLayout({
       <body className={`antialiased`}>
         <WalletProvider>
           {/* <MeshProvider> */}
-          <LaceWalletProvider>
+          <CardanoWalletProvider>
             <Navbar />
             {children}
             <Footer />
             {/* </MeshProvider> */}/
-          </LaceWalletProvider>
+          </CardanoWalletProvider>
         </WalletProvider>
       </body>
     </html>

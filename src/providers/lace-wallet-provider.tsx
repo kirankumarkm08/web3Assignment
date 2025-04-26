@@ -45,10 +45,18 @@ export function LaceWalletProvider({ children }: { children: ReactNode }) {
       console.log("Attempting to connect to Cardano wallet...");
 
       // Check if any Cardano wallet is available
-      if (typeof window === "undefined" || !(window as any).cardano) {
-        throw new Error(
-          "No Cardano wallets found. Please install a wallet extension."
+      if (typeof window === "undefined") {
+        console.log("Window is undefined, likely running on server");
+        setError("Cannot connect to wallet during server-side rendering");
+        return;
+      }
+
+      if (!(window as any).cardano) {
+        console.log("No Cardano wallets found in window object");
+        setError(
+          "No Cardano wallets found. Please install a wallet extension like Lace."
         );
+        return;
       }
 
       // Log all available wallets for debugging
@@ -57,9 +65,11 @@ export function LaceWalletProvider({ children }: { children: ReactNode }) {
 
       // Check specifically for Lace wallet
       if (!(window as any).cardano.lace) {
-        throw new Error(
-          "Lace wallet not found. Please install the Lace extension."
+        console.log("Lace wallet not found");
+        setError(
+          "Lace wallet not found. Please install the Lace extension from the Chrome Web Store."
         );
+        return;
       }
 
       // Try to enable Lace wallet
@@ -79,13 +89,14 @@ export function LaceWalletProvider({ children }: { children: ReactNode }) {
         }
       } catch (enableError) {
         console.error("Error enabling Lace wallet:", enableError);
-        throw new Error(
+        setError(
           `Failed to enable Lace wallet: ${
             enableError instanceof Error
               ? enableError.message
               : String(enableError)
           }`
         );
+        return;
       }
 
       console.log("Lace wallet enabled successfully:", api);
@@ -99,7 +110,6 @@ export function LaceWalletProvider({ children }: { children: ReactNode }) {
       setError(
         error instanceof Error ? error.message : "Failed to connect to wallet"
       );
-      disconnectWallet();
     } finally {
       setConnecting(false);
     }
